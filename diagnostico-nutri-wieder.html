@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Instagram — Nutri Wieder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:#F7FAF5;
+  color:#1C2B1C;
+  font-family:'Inter',sans-serif;
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3{font-family:'Lora',serif;letter-spacing:-0.01em;}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+
+/* FLOATING ICONS */
+.floats{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.fi{position:absolute;opacity:0;}
+.fi svg{display:block;}
+@keyframes rise{
+  0%{transform:translateY(105vh) rotate(0deg) scale(0.8);opacity:0;}
+  8%{opacity:0.07;}
+  92%{opacity:0.07;}
+  100%{transform:translateY(-15vh) rotate(340deg) scale(1.1);opacity:0;}
+}
+
+/* HERO */
+.hero{
+  position:relative;
+  background:#1A3A1A;
+  padding:80px 24px 96px;
+  overflow:hidden;
+  z-index:1;
+}
+.hero-blob{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,0.03);
+  pointer-events:none;
+}
+.hb1{width:500px;height:500px;top:-180px;right:-120px;animation:blob-drift 12s ease-in-out infinite;}
+.hb2{width:250px;height:250px;bottom:-80px;left:-60px;animation:blob-drift 16s ease-in-out infinite reverse;}
+@keyframes blob-drift{
+  0%,100%{transform:translate(0,0);}
+  50%{transform:translate(20px,-20px);}
+}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:2;}
+
+/* LOGO */
+.logo-wrap{
+  display:inline-flex;align-items:center;gap:14px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px;padding:10px 16px;
+  margin-bottom:32px;
+}
+.logo-img{
+  width:48px;height:48px;border-radius:8px;
+  background:#1A5C1A;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Lora',serif;font-size:10px;font-weight:700;
+  color:#E8601A;line-height:1.2;text-align:center;
+  padding:4px;
+  overflow:hidden;
+}
+.logo-img svg{width:100%;height:100%;}
+.logo-text{color:#6AAA6A;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;}
+
+.hero h1{
+  font-size:clamp(32px,6vw,52px);
+  color:#F0F7EC;line-height:1.12;margin-bottom:16px;font-weight:700;
+}
+.hero h1 em{font-style:italic;color:#8FD48F;}
+.hero p{color:#7A9A7A;font-size:15px;max-width:500px;margin-bottom:48px;}
+
+.hero-nums{
+  display:flex;gap:0;flex-wrap:wrap;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;overflow:hidden;
+  background:rgba(0,0,0,0.12);
+}
+.hn{
+  flex:1;min-width:130px;
+  padding:20px 22px;
+  border-right:1px solid rgba(255,255,255,0.07);
+  position:relative;
+}
+.hn:last-child{border-right:none;}
+.hn .v{
+  font-family:'Lora',serif;font-weight:700;
+  font-size:26px;color:#F0F7EC;display:block;
+}
+.hn .l{font-size:12px;color:#5A7A5A;margin-top:3px;display:block;}
+.hn .t{
+  display:inline-block;margin-top:8px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:3px 8px;border-radius:5px;letter-spacing:.04em;
+}
+.t-bad{background:rgba(180,50,30,.25);color:#FF9A8A;}
+.t-ok{background:rgba(80,160,80,.25);color:#A8E6A8;}
+.t-warn{background:rgba(200,140,30,.25);color:#FFD88A;}
+
+/* MAIN */
+main{max-width:780px;margin:0 auto;padding:0 24px 100px;position:relative;z-index:1;}
+section{margin-top:64px;}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:#7AAA7A;display:block;margin-bottom:8px;
+}
+section > h2{
+  font-size:clamp(20px,4vw,28px);
+  margin-bottom:24px;padding-bottom:14px;
+  border-bottom:1px solid #D8EAD8;
+}
+
+/* CARDS */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:580px){.grid2{grid-template-columns:1fr;}}
+.card{
+  background:#fff;border:1px solid #E0EDD8;
+  border-radius:14px;padding:22px;
+  transition:transform .2s,box-shadow .2s;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px -12px rgba(30,60,30,.15);}
+.card-icon{
+  width:36px;height:36px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;
+}
+.card.good .card-icon{background:#E4F3DC;color:#3A8A3A;}
+.card.bad .card-icon{background:#F5E0DB;color:#8C2A1A;}
+.card h3{font-size:15px;margin-bottom:6px;}
+.card p{font-size:13.5px;color:#5A7A5A;line-height:1.6;}
+
+/* CENTRAL PROBLEM */
+.central{
+  background:#fff;border:1px solid #E0EDD8;
+  border-left:4px solid #C0392B;
+  border-radius:14px;padding:28px;margin-bottom:14px;
+}
+.central .clabel{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:#C0392B;display:block;margin-bottom:10px;
+}
+.central h3{font-size:20px;margin-bottom:10px;}
+.central p{font-size:14px;color:#5A7A5A;line-height:1.65;}
+
+/* BARS */
+.bars{background:#fff;border:1px solid #E0EDD8;border-radius:14px;padding:26px;}
+.bars h3{font-size:16px;margin-bottom:4px;}
+.bars .sub{font-size:13px;color:#7AAA7A;margin-bottom:22px;}
+.bar-row{display:grid;grid-template-columns:150px 1fr 90px;align-items:center;gap:12px;margin-bottom:10px;}
+.bar-lbl{font-size:13px;color:#3A5A3A;}
+.bar-track{background:#EDF4E8;border-radius:8px;height:12px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:8px;width:0;transition:width 1.5s cubic-bezier(.2,.8,.2,1);}
+.bf-hi{background:linear-gradient(90deg,#4CAF50,#8BC34A);}
+.bf-mid{background:#A8D08A;}
+.bf-lo{background:#C0392B;}
+.bar-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:#7AAA7A;text-align:right;}
+.bars.go .w100{width:100%;}
+.bars.go .w90{width:90%;}
+.bars.go .w84{width:84%;}
+.bars.go .w6{width:6%;}
+.bars.go .w1{width:1%;}
+@media(max-width:500px){.bar-row{grid-template-columns:100px 1fr 70px;}}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;}
+.step{
+  display:grid;grid-template-columns:40px 1fr;gap:18px;
+  padding:22px 0;border-top:1px solid #D8EAD8;
+}
+.step:first-child{border-top:none;padding-top:0;}
+.step .n{
+  font-family:'Lora',serif;font-weight:700;
+  font-size:24px;color:#4CAF50;
+}
+.step h3{font-size:15px;margin-bottom:5px;}
+.step p{font-size:13.5px;color:#5A7A5A;}
+
+/* ROI */
+.roi{
+  background:#1A3A1A;border-radius:16px;
+  padding:36px;color:#F0F7EC;
+}
+.roi .eyebrow{color:#4A7A4A;}
+.roi h2{color:#F0F7EC;font-size:clamp(18px,4vw,24px);
+  margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:14px;}
+.roi > p{color:#6A9A6A;font-size:14px;margin-bottom:28px;}
+.roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:540px){.roi-grid{grid-template-columns:1fr;}}
+.roi-box{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:12px;padding:20px;
+}
+.roi-box h4{
+  font-size:11px;color:#8FD48F;margin-bottom:14px;
+  font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;
+}
+.roi-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-size:13px;color:#6A9A6A;
+  padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);
+}
+.roi-row:last-child{border-bottom:none;}
+.rv{font-family:'Lora',serif;font-weight:600;font-size:16px;color:#F0F7EC;}
+.rv.hi{color:#8FD48F;}
+.roi-note{
+  grid-column:1/-1;font-size:12px;color:#3A5A3A;
+  border-top:1px solid rgba(255,255,255,.07);
+  padding-top:14px;margin-top:6px;line-height:1.6;
+}
+
+/* CTA */
+.cta{
+  background:#fff;border:1px solid #E0EDD8;
+  border-radius:14px;padding:44px 40px;text-align:center;margin-top:56px;
+}
+.cta h2{font-size:22px;margin-bottom:8px;}
+.cta p{font-size:14px;color:#5A7A5A;max-width:380px;margin:0 auto 20px;}
+.sig{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8AAA8A;letter-spacing:.04em;}
+.sig b{color:#1C2B1C;}
+
+/* LEAF ICONS ANIMATION HELPERS */
+.leaf-pulse{animation:leaf-pulse 3s ease-in-out infinite;}
+@keyframes leaf-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+</style>
+</head>
+<body>
+
+<!-- FLOATING BACKGROUND ICONS -->
+<div class="floats" aria-hidden="true" id="floats"></div>
+
+<div class="hero">
+  <div class="hero-blob hb1"></div>
+  <div class="hero-blob hb2"></div>
+  <div class="hero-inner">
+
+    <!-- LOGO -->
+    <div class="logo-wrap">
+      <div class="logo-img">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="80" height="80" fill="#1A5C1A" rx="8"/>
+          <text x="40" y="34" font-family="Georgia,serif" font-size="16" font-weight="bold" fill="#E8601A" text-anchor="middle">nutri</text>
+          <text x="40" y="52" font-family="Georgia,serif" font-size="16" font-weight="bold" fill="#E8601A" text-anchor="middle">wieder.</text>
+        </svg>
+      </div>
+      <span class="logo-text">@nutriwieder · Diagnóstico Instagram</span>
+    </div>
+
+    <h1>Reels com 137 mil views.<br>Feed que <em>não converte.</em></h1>
+    <p>O alcance já existe. O problema está na estratégia para capturar quem chega e transformar visita em seguidor.</p>
+    <div class="hero-nums">
+      <div class="hn">
+        <span class="v">7.892</span>
+        <span class="l">seguidores</span>
+        <span class="t t-warn">potencial subutilizado</span>
+      </div>
+      <div class="hn">
+        <span class="v">137 mil</span>
+        <span class="l">views no maior reel</span>
+        <span class="t t-ok">alcance real existe</span>
+      </div>
+      <div class="hn">
+        <span class="v">55</span>
+        <span class="l">curtidas médias/post</span>
+        <span class="t t-bad">0,69% engajamento</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <section id="bom">
+    <span class="eyebrow">Parte 1</span>
+    <h2>O que está funcionando</h2>
+    <div class="grid2">
+      <div class="card good">
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <h3>Reels com alcance real</h3>
+        <p>Três reels passaram de 100 mil visualizações. O algoritmo já entregou o perfil para um público muito maior do que a base atual de seguidores.</p>
+      </div>
+      <div class="card good">
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 8C8 10 5.9 16.17 3.82 19.34A1 1 0 0 0 5 21C13 16 19 13 22 3C22 3 13 5 8 12"/></svg>
+        </div>
+        <h3>Marca com 20 anos e propósito claro</h3>
+        <p>Credibilidade construída, identidade visual definida e presença na Fenasoja. Isso é difícil de imitar e fácil de ampliar com estratégia.</p>
+      </div>
+      <div class="card good">
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Pessoas reais em cena</h3>
+        <p>Os reels que mais performam mostram pessoas usando os produtos no dia a dia. Exatamente o formato que o algoritmo favorece.</p>
+      </div>
+      <div class="card good">
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Produto com apelo visual forte</h3>
+        <p>Alimentos naturais fotografam bem. O material já tem qualidade suficiente para funcionar em conteúdo orgânico e pago.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="problema">
+    <span class="eyebrow">Parte 2</span>
+    <h2>O problema central</h2>
+    <div class="central">
+      <span class="clabel">Problema crítico</span>
+      <h3>137 mil views. 7.892 seguidores. A conta não fecha.</h3>
+      <p>Um reel com 137 mil visualizações em um perfil com menos de 8 mil seguidores significa que o conteúdo chegou a muita gente que não virou seguidor. Não é problema de alcance. É problema de conversão e consistência. O perfil viraliza de forma isolada, mas não tem estratégia para capturar esse público quando ele chega.</p>
+    </div>
+    <div class="bars" id="bars">
+      <h3>Distribuição de views por formato</h3>
+      <div class="sub">A diferença entre os reels que explodem e o restante do feed</div>
+      <div class="bar-row">
+        <span class="bar-lbl">Melhor reel</span>
+        <div class="bar-track"><div class="bar-fill bf-hi w100"></div></div>
+        <span class="bar-num">137 mil</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-lbl">2º melhor reel</span>
+        <div class="bar-track"><div class="bar-fill bf-hi w90"></div></div>
+        <span class="bar-num">124 mil</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-lbl">3º melhor reel</span>
+        <div class="bar-track"><div class="bar-fill bf-hi w84"></div></div>
+        <span class="bar-num">115 mil</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-lbl">Posts normais</span>
+        <div class="bar-track"><div class="bar-fill bf-mid w6"></div></div>
+        <span class="bar-num">2 a 7 mil</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-lbl">Feed / carrossel</span>
+        <div class="bar-track"><div class="bar-fill bf-lo w1"></div></div>
+        <span class="bar-num">~55 curtidas</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="trava">
+    <span class="eyebrow">Parte 3</span>
+    <h2>O que está travando a conversão</h2>
+    <div class="grid2">
+      <div class="card bad">
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3>Sem estratégia de captura</h3>
+        <p>Quando um reel viraliza, quem chega no perfil não encontra motivo claro para seguir. Falta fluxo de conteúdo sequencial e CTA.</p>
+      </div>
+      <div class="card bad">
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4"/></svg>
+        </div>
+        <h3>Destaques aleatórios</h3>
+        <p>Conteúdo misturado nos destaques passa impressão de improviso e afasta quem ainda não conhece a marca.</p>
+      </div>
+      <div class="card bad">
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3>Engajamento 3x abaixo do esperado</h3>
+        <p>55 curtidas com quase 8 mil seguidores é 0,69%. O esperado para alimentos saudáveis é 1,5% a 3%.</p>
+      </div>
+      <div class="card bad">
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3>Pico sem follow-up</h3>
+        <p>Após um reel viralizar, o próximo post não aproveita o momento. A audiência vai embora sem converter em seguidor.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="plano">
+    <span class="eyebrow">Parte 4</span>
+    <h2>O que muda com gestão profissional</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="n">01</span>
+        <div>
+          <h3>Mapear o que os reels virais têm em comum e replicar</h3>
+          <p>Os três reels com mais de 100 mil views já mostram a fórmula. O trabalho é entender o padrão e transformar isso em calendário semanal consistente.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="n">02</span>
+        <div>
+          <h3>Reestruturar os destaques por categoria e intenção</h3>
+          <p>Destaques organizados (Receitas, Produtos, Sobre a Nutri, Onde encontrar) transformam o perfil em vitrine funcional para quem chega pela primeira vez.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="n">03</span>
+        <div>
+          <h3>Criar sequência de conteúdo após cada pico de alcance</h3>
+          <p>Quando um reel viraliza, os próximos posts precisam estar prontos para capturar quem chegou. Hoje isso não acontece.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="n">04</span>
+        <div>
+          <h3>Tráfego pago para amplificar o que já funciona</h3>
+          <p>Impulsionar os reels que já provaram funcionar organicamente acelera o crescimento de base de seguidores de forma previsível e mensurável.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="retorno">
+    <div class="roi">
+      <span class="eyebrow">Parte 5</span>
+      <h2>O que a Nutri Wieder pode esperar</h2>
+      <p>Com base no comportamento atual do perfil e em campanhas similares na região Sul.</p>
+      <div class="roi-grid">
+        <div class="roi-box">
+          <h4>Crescimento orgânico (3 meses)</h4>
+          <div class="roi-row"><span>Seguidores estimados</span><span class="rv">+800 a 1.500</span></div>
+          <div class="roi-row"><span>Engajamento esperado</span><span class="rv">1,5% a 3%</span></div>
+          <div class="roi-row"><span>Alcance mensal</span><span class="rv">+15.000/mês</span></div>
+          <div class="roi-row"><span>Reels com potencial viral/mês</span><span class="rv hi">2 a 4</span></div>
+        </div>
+        <div class="roi-box">
+          <h4>Com tráfego pago ativo</h4>
+          <div class="roi-row"><span>Investimento em mídia</span><span class="rv">R$ 400 a 600/mês</span></div>
+          <div class="roi-row"><span>Pessoas alcançadas</span><span class="rv">+80.000</span></div>
+          <div class="roi-row"><span>Custo por novo seguidor</span><span class="rv">R$ 0,80 a R$ 1,50</span></div>
+          <div class="roi-row"><span>Retorno vs. investimento</span><span class="rv hi">5x a 10x</span></div>
+        </div>
+        <p class="roi-note">Estimativas conservadoras baseadas em campanhas reais em negócios similares da região Sul. Resultados reais dependem do orçamento de mídia, época do ano e ofertas ativas.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2>Próximo passo</h2>
+    <p>Esse diagnóstico é gratuito e sem compromisso. Se fizer sentido conversar, é só responder.</p>
+    <div class="sig">Preparado por <b>Pedro Munaretto</b> · @pedro_munaretto</div>
+  </div>
+
+</main>
+
+<script>
+// BARS ANIMATION
+const bars = document.getElementById('bars');
+new IntersectionObserver(e=>{
+  if(e[0].isIntersecting) bars.classList.add('go');
+},{threshold:.3}).observe(bars);
+
+// FLOATING ICONS
+const icons = [
+  // leaf
+  `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2D7A2D" stroke-width="1.5"><path d="M17 8C8 10 5.9 16.17 3.82 19.34A1 1 0 0 0 5 21C13 16 19 13 22 3C22 3 13 5 8 12"/></svg>`,
+  // apple
+  `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2D7A2D" stroke-width="1.5"><path d="M12 2a4 4 0 0 1 4 4M12 2a4 4 0 0 0-4 4M8 6C4 6 2 10 2 14a8 8 0 0 0 8 8 8 8 0 0 0 8-8c0-4-2-8-6-8"/><path d="M12 2v4"/></svg>`,
+  // grain / wheat
+  `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2D7A2D" stroke-width="1.5"><path d="M12 22V12M12 12C12 12 8 9 8 6a4 4 0 0 1 8 0c0 3-4 6-4 6z"/><path d="M12 17c-2-1-4-3-4-3M12 17c2-1 4-3 4-3"/><path d="M12 14c-2-1-3-2-3-2M12 14c2-1 3-2 3-2"/></svg>`,
+  // heart / health
+  `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2D7A2D" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+  // seed / circle
+  `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D7A2D" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`,
+];
+
+const floats = document.getElementById('floats');
+const positions = [5,15,28,40,55,68,78,88,95];
+positions.forEach((left, i) => {
+  const el = document.createElement('div');
+  el.className = 'fi';
+  el.style.left = left + '%';
+  const duration = 16 + (i * 3.5);
+  const delay = -(i * 2.8);
+  el.style.animation = `rise ${duration}s ${delay}s linear infinite`;
+  el.innerHTML = icons[i % icons.length];
+  floats.appendChild(el);
+});
+</script>
+</body>
+</html>
